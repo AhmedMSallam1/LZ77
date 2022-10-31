@@ -4,10 +4,14 @@ import java.util.*;
 
 public class LZ77_Comperssion {
     private String data;
-    Vector<LZ77_Code> tags = new Vector<LZ77_Code>();
+    Scanner console=new Scanner ( System.in );
 
-    public LZ77_Comperssion(String data) {
-        this.data = data;
+    Vector<LZ77_Code> tags = new Vector<>();
+
+    public LZ77_Comperssion() {
+        System.out.println("Please Input The Data To Encrypt : ");
+        data=console.nextLine();
+        compress();
     }
 
     public void compress() {
@@ -27,7 +31,7 @@ public class LZ77_Comperssion {
                 //check if this string iterate in data string or not
                 if (length == temp.length()) {
                     ok = true;
-                    prevPosition = j;
+                    prevPosition = j; //j=0
                     length = 0;
                 }
                 if (temp.charAt(length) == data.charAt(j)) {
@@ -57,7 +61,6 @@ public class LZ77_Comperssion {
                 temp = "";
             } else {
                 prevLength = temp.length();
-
             }
         }
         //ffff
@@ -68,38 +71,13 @@ public class LZ77_Comperssion {
             tempp.setNextChar(data.charAt(data.length() - 1));
             tags.add(tempp);
         }
+        printTags();
     }
-    public void printTags(){
-        System.out.println("Tages Are: ");
-        for(int i=0;i<tags.size ();i++){
-            System.out.println ("<"+tags.get ( i).getIndex ()+","+tags.get ( i).getLength ()+","+tags.get ( i).getNextChar ()+">");
-        }
-    }
-    public void decompressed(){
-        //string which will be returned to decompress
-        String dataa="";
-        //String temp="";
-        for(int i=0;i<tags.size ();i++){
-            if(tags.get ( i).getLength ()==0){
-                dataa+=tags.get ( i).getNextChar ();
-            }
-            else{
-                //get length of characters
-                int sz=tags.get ( i).getLength ();
-                //get length of string
-                int dz=dataa.length ();
-                // calculate posion that will be start from the string
-                int ind=Math.abs(dz-(tags.get ( i).getIndex ()));
-                while(sz>0){
-                    dataa+=dataa.charAt ( ind );
-                    ind++;
-                    sz--;
-                }
-                dataa+=tags.get ( i).getNextChar ();
-            }
-        }
-        if(dataa.equals(data)){
-            System.out.println("After Decompresion: "+dataa);
+
+    public void printTags() {
+        System.out.println("Tags Are: ");
+        for (LZ77_Code tag : tags) {
+            System.out.println("<" + tag.getIndex() + "," + tag.getLength() + "," + tag.getNextChar() + ">");
         }
     }
 }

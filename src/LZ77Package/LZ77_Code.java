@@ -22,4 +22,5 @@ public class LZ77_Code {
     public char getNextChar(){
         return nextChar;
     }
+
 }
